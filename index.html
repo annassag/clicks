@@ -3,213 +3,255 @@
 <head>
 	<title>Workday</title>
 	<style type="text/css">
-		
 
+	body, html {
+		  margin: 0;
+		  height: 100%;
+		  overflow: hidden;
+	}
 
-body, html {
-  height: 100%;
-  overflow: hidden;
-}
+	#container {
+  	display: inherit;
+	}
 
-.clock {
-	font-size: 42px;
-	font-family: sans-serif;
+	.timestamp {
+		display: inherit;
+	}
+
+	#clicks {
+  	position: fixed;
+  	bottom: 35px;
+  	right: 25px;
+  	font-size: 100px;
+  	font-family: sans-serif;
+	}
+
+	#demo {
+	position: fixed;
+  	top: 100px;
+  	margin-left: 20px;
+  	width: 200px;
+  	font-family: sans-serif;
+  	font-size: 18px;
+	}
+
+	.clock {
+			position: fixed;
+		top: 10px;
+		left: 10px;
+	font-size: 35px;
+	font-family: 'Helvetica', sans-serif;
 	z-index: 3;
-}
+	font-variant-numeric: tabular-nums;
+	}
 
-#myVideo {
+	#myVideo {
+	  position: fixed;
+	  right: 0;
+	  bottom: 0;
+	  width: 100%;
+	/*  height: 100%;*/
+	  z-index: -1;
+	  filter: grayscale(100%) blur(50px) contrast(200%) brightness(150%);
+	  opacity: 0.6;
+	}
+
+	.bg {
+	  /* The image used */
+	  background-image: url("xox_3.gif");
+	  z-index: 1;
+	  /* Full height */
+	  background-size: 100%;
+	  width: 100%;
+	  height: 100%;
+	  position: fixed;
+	  left: 0;
+	  right: 0;
+	/*  bottom: 0;*/
+	  top: 0;
+	  mix-blend-mode: multiply;
+	  /* Center and scale the image nicely */
+	  /*background-position: center;
+	  background-repeat: no-repeat;
+	  background-size: cover;*/
+	}
+
+	#text {
+padding-top: 100px;
+/*	  text-align: center;*/
+	  color: black;
+	  font-family: sans-serif;
+	  font-size: 35px;
+	  margin: auto;
+	}
+
+	#player {
+		  display: block;
+  margin: 5% auto; /* Will not center vertically and won't work in IE6/7. */
+left: 0;
+right: 0;
+  top: 10px;
   position: fixed;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-/*  height: 100%;*/
-  z-index: -1;
-  filter: grayscale(100%) blur(50px) contrast(200%) brightness(150%);
-  opacity: 0.6;
-}
+  width: 50px;
+  background-color: grey;
+  border-radius: 50px;
+	}
 
-.bg {
-  /* The image used */
-  background-image: url("xox_3.gif");
-  z-index: 1;
-
-  /* Full height */
-  background-size: 100%;
-  width: 100%;
-  height: 100%;
+	#imgClickAndChange {
+/*		background-color: white;*/
+  display: block;
+  margin: 5% auto; /* Will not center vertically and won't work in IE6/7. */
+left: 0;
+right: 0;
+  top: 60px;
   position: fixed;
-  left: 0;
-  right: 0;
-/*  bottom: 0;*/
-  top: 0;
-  mix-blend-mode: multiply;
+  width: 60%;
+/*  height: 80%;*/
+/*  mix-blend-mode: multiply;*/
+/*  opacity: 0.3;*/
+	}
 
-  /* Center and scale the image nicely */
-  /*background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;*/
-}
-
-#text {
+button {
+/*  border: 1px solid black;*/
+  margin: 2% 0 0 0;
+/*  padding: 10px 15px;*/
   text-align: center;
-  color: black;
-  font-family: sans-serif;
-  font-size: 42px;
-  width: 1000px;
-  margin: auto;
-}
-audio, embed {
-    position: absolute;
-    z-index: -9999;
-}
+  text-decoration: none;
+  display: inline-flex;
+  font-size: 40px;
+  border-radius: 5px;
+  background-color: grey;
+  }
 
+	audio, embed {
+	    position: absolute;
+	    z-index: -9999;
+	}
 
+@font-face {
+  font-family: 'Helvetica Mono';
+  src:  url('assets/HelveticaMonospacedPro-Rg.woff2') format('woff2');
+}
 
 	</style>
 </head>
 <body>
     <body>
-<!-- 	<video autoplay muted loop id="myVideo">
-  	<source src="assets/film.mp4" type="video/mp4">
-	</video> -->
-    <iframe src="silence.mp3" allow="autoplay" id="audio" style="display:none"></iframe>
-    <audio id="player" autoplay controls loop><source src="host6.mp3" type="audio/mp3"></audio></div>
-<!-- <div class="bg"></div> -->
-	<div class="clock">Until Next Day <span id="remainingTime">23:59:59</span></div>
-	<div id="text" style="width: 1200px;white-space: pre-line"></div>
+    	<div class="clock">Until Next Day <span id="hours" style="font-family:Helvetica Mono"></span><span id="mins" style="font-family:Helvetica Mono"></span><span id="secs" style="font-family:Helvetica Mono"></span></div>
+    	<div id="container">
+    	<div class="timestamp">
+		<video autoplay muted loop id="myVideo">
+  		<source src="assets/film.mp4" type="video/mp4">
+		</video>
 
-    </body>
+<audio id="audio" controls style="display:none">
+  <source src="host6.mp3" type="audio/mpeg"> 
+</audio>
+
+		<div id="text" style="width: 1250px;white-space: pre-line"></div>
+		<div id="demo" style="width: 1200px;white-space: pre-line"></div>
+		<div id="clicks" style="font-family:Helvetica Mono"></div>
+		<img id="imgClickAndChange" onClick="changeImage()"></div>
+		</div>
+		</div>
+	    </body>
 
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-
-$("html").addClass("timestamp");
-			$(function(){
-			var fadeDelay = 1000;
-			var fadeDuration = 1000;
-		    $(document).click(function(e){
-		    	var i = 0;
-				var data = [
-				  	"freak skies",
-					"freak skies",
-					"remind me",
-					"of nintendo",
-					"glow all",
-					"around us",
-					"people really",
-					"believe",
-					"anything",
-					"truly strange",
-					"could survive",
-					"attention",
-					"i guess for",
-					"love i’d",
-					"risk time",
-					"i could be",
-					"productive",
-					"but phillips",
-					"smart hue",
-					"costs $50",
-					"seems sick",
-					"to feel what",
-					"you want",
-					"in texas",
-					"louis vuitton",
-					"opened a",
-					"new factory",
-					"when i say",
-					"lol i also",
-					"mean :/",
-					"i also mean",
-					"i have no",
-					"emoji for",
-					"the mood",
-					"i’m in",
-					"listening to",
-					"party music",
-					"on bootleg",
-					"platforms",
-					"bpm reaching",
-					"understanding",
-					"shit colored",
-					"bags just",
-					"out here",
-					"under blue",
-					"sky my",
-					"neighbor’s",
-					"room emits",
-					"pink light",
-					"my heart",
-					"gets soft",
-
-				  ];
-
-function change() {
-var currentIndex = 0;
-  var newIndex = getRandomInt( data.length );
-  while (newIndex == currentIndex) {
-    newIndex = getRandomInt( data.length ); 
+// POSITION COUNT //////////////////////////////////////////////////////////
+document.addEventListener('keydown', function(e) {
+  if (e.keyCode == 13) {
+    document.getElementById('audio').play();
   }
+});
 
-		  //   	var today = new Date();
-				// var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
-				var div = $('<div class="timestamp">')
-					.css({
-						"left": e.pageX + 'px',
-						"top": e.pageY + 'px',
-						"color": 'blue',
-						"position": 'absolute',
-						"transform": 'translate(-50%, -50%)',
-						"font-family": 'sans-serif',
-						"font-size": '24px',
-						"pointer-events": 'none',
-					})
-					.append($('<div class="timestamp">' + data[newIndex] + '</div>'))
-					.appendTo(document.body);
+window.onload = localStorage.clear();
 
-	}
+      $("html").addClass("timestamp");
+      $(function(){
+        $(document).click(function(e){
+        var i = 0
+        var data = ["x", "2", "3"]
 
-change();
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
+        function math() {  
+        if (i >= data.length) i = 0;
+        i++;
+        }
+
+        var div = $('<div class="timestamp">')
+          .css({
+            "left": e.pageX + 'px',
+            "top": e.pageY + 'px',
+            "color": 'blue',
+            // "width": '100px',
+            "position": 'absolute',
+            // "background-color": 'red',
+            "transform": 'translate(-50%, -50%)',
+            "font-family": 'sans-serif',
+            "font-size": '34px',
+            "pointer-events": 'none',
+          })
+          .append($('<div class="timestamp">' + data[i++] + '</div>'))
+          .appendTo(document.body);          
+
+        });
+    });
+
+// CLICK COUNT //////////////////////////////////////////////////////////
+
+document.addEventListener("click", onClick);
+var clicks = 0;
+function onClick()
+{
+    if (clicks >= 10) {
+    	// window.location.href = "http://www.w3schools.com";
+    	var x = document.getElementById("container");   // Get the element with id="demo"
+		x.style.display = "none";  
+		var x = document.getElementsByClassName("timestamp");   // Get the element with id="demo"
+		x.style.color = "white";  
+	
+    }
+
+    clicks += 1;
+    document.getElementById("clicks").innerHTML = clicks;
+};
+
+
+document.addEventListener("click", myFunction);
+
+function myFunction(event) {
+  var n = event.timeStamp + "<br />";
+  document.getElementById("demo").insertAdjacentHTML('beforeend', n);
 }
-						
-				// setTimeout(function() {
-				// 	div.addClass('fade-out');			
-				// 	setTimeout(function() { div.remove(); }, fadeDuration);
-				// }, fadeDelay);
+// CLOCK TIMER //////////////////////////////////////////////////////////
 
-		    });
-		});
 </script>
 <script type="text/javascript">
-function Timer(duration, display) 
-{
-    var timer = duration, hours, minutes, seconds;
-    setInterval(function () {
-        hours = parseInt((timer /3600)%24, 10)
-        minutes = parseInt((timer / 60)%60, 10)
-        seconds = parseInt(timer % 60, 10);
 
-				hours = hours < 10 ? "0" + hours : hours;
+    var countDownDate = new Date("Sept 24, 2020 00:00:00").getTime();
+    var myfunc = setInterval(function() {
+
+    var now = new Date().getTime();
+    var timeleft = countDownDate - now;
+        
+    var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+        
+    // Result is output to the specific element
+    	hours = hours < 10 ? "0" + hours : hours;
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
 
-        display.text(hours +":"+minutes + ":" + seconds);
-
-				--timer;
+    document.getElementById("hours").innerHTML = hours + "h " 
+    document.getElementById("mins").innerHTML = minutes + "m " 
+    document.getElementById("secs").innerHTML = seconds + "s " 
+        
     }, 100);
-}
-
-jQuery(function ($) 
-{
-    var twentyFourHours = 24 * 60 * 60;
-    var display = $('#remainingTime');
-    Timer(twentyFourHours, display);
-});
 
 
 
@@ -229,10 +271,12 @@ var typewriter = new Typewriter(app, {
 });
 
 typewriter
-	.pauseFor(10000)
+	.pauseFor(1000)
+	.typeString('<span style="color:#fc7b03">Press Enter\n</span>')
+	.pauseFor(8000)
 	.typeString('From one day to the other we were only allowed to speak 300 words in a day.\n')
     .pauseFor(2000)
-    .typeString('We could write 100.\n')
+    .typeString('<span style="color:#fc7b03">We could write 100.\n</span>')
     .pauseFor(2000)
     .typeString('To begin with we would run out of our share before noon. Stories would stretch over weeks, arguments would drag on for days, projections would appear in the mirror of silence.\n')
     .pauseFor(2000)
@@ -240,13 +284,69 @@ typewriter
     .pauseFor(2000)
     .typeString('We’d been told the carbon dioxide we exhaled had become a pollutant, acidifying our soil and waters. The earth didn’t have more storage for information. Our bodies became the memory machines.\n')
     .pauseFor(2000)
-    .typeString('Each day we were given 50 clicks or taps. Instead of making sentences')
+    .typeString('<span style="color:#fc7b03">Each day we get 10 clicks or taps.\n</span>')
+    .pauseFor(2000)
+    .typeString('Instead of making sentences we\n')
+    .pauseFor(2000)
+    .typeString('<span style="color:#fc7b03">Click</span>')
     .pauseFor(10000000000000000000)
     .start();
 
 
 
 
+</script>
+
+<script>
+
+// image sources in array. image[0] will have first image src, image[3] will have last src
+var images = [
+  "pics/2.png",
+  "pics/1.png",
+  "pics/3.png",
+  "pics/4.png",
+  "pics/5.png",
+  "pics/6.png",
+  "pics/7.png",
+  "pics/8.png",
+  "pics/9.png",
+  "pics/10.png",
+  "pics/11.png",
+  "pics/12.png",
+  "pics/13.png",
+  "pics/14.png",
+  "pics/15.png",
+  "pics/16.png",
+  "pics/17.png",
+  "pics/18.png",
+  "pics/19.png",
+  "pics/20.png",
+  "pics/21.png",
+  "pics/22.png",
+  "pics/23.png",
+  "pics/24.png",
+  "pics/25.png",
+  "pics/26.png",
+  "pics/27.png",
+  "pics/28.png",
+  "pics/29.png",
+  "pics/30.png",
+  "pics/31.png",
+  "pics/32.png",
+
+]
+
+var step = 0;
+
+document.addEventListener("click", changeImage);
+
+function changeImage() {
+  // exit if no images, or step = number of items in array (4)
+  if (typeof images == "undefined" ||  step == images.length) return;     
+
+  document.getElementById('imgClickAndChange').src = images[step];
+  step++;
+}
 </script>
 
 
